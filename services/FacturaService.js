@@ -3,6 +3,7 @@ const ItemFacturaRepository = require('../repositories/ItemFacturaRepository');
 const ClienteRepository = require('../repositories/ClienteRepository');
 const VendedorRepository = require('../repositories/VendedorRepository');
 const ProductoRepository = require('../repositories/ProductoRepository');
+const { obtenerProductos } = require('./ProductoService');
 
 const FacturaService = {
   async crearFactura(data) {
@@ -73,6 +74,10 @@ const FacturaService = {
     }
 
     return factura;
+  },
+
+  async obtenerFacturas() {
+    return await FacturaRepository.obtenerTodos();
   },
 
   async obtenerFacturaPorId(id) {
