@@ -11,6 +11,9 @@ const Vendedor = sequelize.define('Vendedor', {
   direccion: DataTypes.STRING,
   telefono: DataTypes.STRING,
   email: DataTypes.STRING,
+  rol: DataTypes.STRING,
+  user: DataTypes.STRING,
+  password: DataTypes.STRING, 
   codVendedor: DataTypes.INTEGER
 }, {
   tableName: 'vendedores',
