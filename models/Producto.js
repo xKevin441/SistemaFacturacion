@@ -14,7 +14,8 @@ const Producto = sequelize.define('Producto', {
   marca: DataTypes.STRING,
   tallaPrenda: DataTypes.STRING,
   genero: DataTypes.STRING,
-  stock: DataTypes.INTEGER
+  stock: DataTypes.INTEGER,
+  imagen: DataTypes.STRING,
 }, {
   tableName: 'productos',
   timestamps: false
