@@ -6,10 +6,14 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const path = require('path'); // <--- nuevo
 
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
+
+// Servir archivos estáticos desde 'public'
+app.use(express.static(path.join(__dirname, 'public'))); // <-- nuevo
 
 // Rutas
 app.use('/api/categorias', require('./routes/CategoriaRoute'));

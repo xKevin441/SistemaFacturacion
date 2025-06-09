@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Facturación - Tienda de Ropas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <!-- Login Screen -->
+            <div id="login-screen" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+                <div class="login-form">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-store fa-3x text-primary"></i>
+                        <h2 class="mt-3">Sistema de Facturación</h2>
+                        <p class="text-muted">Tienda de Ropas</p>
+                    </div>
+                    <form id="login-form">
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom btn-custom w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                        </button>
+                    </form>
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">
+                            Demo: admin/admin123 | vendedor1/vend123
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Application -->
+            <div id="main-app" class="hidden">
+                <!-- Header -->
+                <nav class="navbar navbar-custom">
+                    <div class="container-fluid">
+                        <div class="navbar-brand">
+                            <i class="fas fa-tshirt me-2"></i>
+                            Sistema de Facturación - Tienda de Ropas
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div id="usuario-info" class="me-3">
+                                <i class="fas fa-user me-2"></i>
+                                <span id="usuario-nombre"></span>
+                                <span class="badge bg-light text-dark ms-2" id="usuario-rol"></span>
+                            </div>
+                            <button class="btn btn-outline-light" onclick="logout()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Salir
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Navigation Tabs -->
+                <ul class="nav nav-tabs mt-3" id="main-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#facturacion">
+                            <i class="fas fa-file-invoice me-2"></i>Facturación
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#productos">
+                            <i class="fas fa-tags me-2"></i>Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#clientes">
+                            <i class="fas fa-users me-2"></i>Clientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#facturas">
+                            <i class="fas fa-receipt me-2"></i>Facturas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#categorias">
+                            <i class="fas fa-list me-2"></i>Categorías
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content p-4">
+                    <!-- Facturación Tab -->
+                    <div class="tab-pane fade show active" id="facturacion">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5><i class="fas fa-file-invoice me-2"></i>Nueva Factura</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="factura-form">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Cliente</label>
+                                                    <select class="form-select" id="cliente-select" required>
+                                                        <option value="">Seleccionar cliente...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Vendedor</label>
+                                                    <select class="form-select" id="vendedor-select" required>
+                                                        <option value="">Seleccionar vendedor...</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Producto</label>
+                                                    <select class="form-select" id="producto-select">
+                                                        <option value="">Seleccionar producto...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">Cantidad</label>
+                                                    <input type="number" class="form-control" id="cantidad-input"
+                                                        min="1" value="1">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <button type="button" class="btn btn-success btn-custom w-100"
+                                                        onclick="agregarProducto()">
+                                                        <i class="fas fa-plus me-2"></i>Agregar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <div id="productos-factura" class="mt-4">
+                                            <h6>Productos en la factura:</h6>
+                                            <div id="lista-productos"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card total-section">
+                                    <div class="card-body">
+                                        <h5 class="text-center mb-3">
+                                            <i class="fas fa-calculator me-2"></i>Resumen
+                                        </h5>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Subtotal:</span>
+                                            <span id="subtotal">0.00 Bs</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>IVA (13%):</span>
+                                            <span id="iva">0.00 Bs</span>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <strong>Total:</strong>
+                                            <strong id="total">0.00 Bs</strong>
+                                        </div>
+                                        <button class="btn btn-light btn-custom w-100" onclick="generarFactura()">
+                                            <i class="fas fa-file-pdf me-2"></i>Generar Factura
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Productos Tab -->
+                    <div class="tab-pane fade" id="productos">
+                        <div class="card">
+                            <div
+                                class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                <h5><i class="fas fa-tags me-2"></i>Gestión de Productos</h5>
+                                <button class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#producto-modal">
+                                    <i class="fas fa-plus me-2"></i>Nuevo Producto
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Marca</th>
+                                                <th>Talla</th>
+                                                <th>Género</th>
+                                                <th>Precio</th>
+                                                <th>Stock</th>
+                                                <th>Categoría</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="productos-table">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clientes Tab -->
+                    <div class="tab-pane fade" id="clientes">
+                        <div class="card">
+                            <div
+                                class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                                <h5><i class="fas fa-users me-2"></i>Gestión de Clientes</h5>
+                                <button class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#cliente-modal">
+                                    <i class="fas fa-plus me-2"></i>Nuevo Cliente
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>NIT</th>
+                                                <th>Dirección</th>
+                                                <th>Teléfono</th>
+                                                <th>Email</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla-clientes"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Facturas Tab -->
+                    <div class="tab-pane fade" id="facturas">
+                        <div class="card">
+                            <div class="card-header bg-warning text-white">
+                                <h5><i class="fas fa-receipt me-2"></i>Facturas Emitidas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Cliente</th>
+                                                <th>Fecha</th>
+                                                <th>Total</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="facturas-table">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categorías Tab -->
+                    <div class="tab-pane fade" id="categorias">
+                        <div class="card">
+                            <div
+                                class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                <h5><i class="fas fa-list me-2"></i>Gestión de Categorías</h5>
+                                <button class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#categoria-modal">
+                                    <i class="fas fa-plus me-2"></i>Nueva Categoría
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Descripción</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="categorias-table">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales -->
+    <!-- Modal Producto -->
+    <div class="modal fade" id="producto-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gestión de Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="producto-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre *</label>
+                                    <input type="text" class="form-control" id="producto-nombre" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Marca</label>
+                                    <input type="text" class="form-control" id="producto-marca">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Precio *</label>
+                                    <input type="number" step="0.01" class="form-control" id="producto-precio" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Talla</label>
+                                    <select class="form-select" id="producto-talla">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="XS">XS</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                        <option value="XXL">XXL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Stock *</label>
+                                    <input type="number" class="form-control" id="producto-stock" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Género *</label>
+                                    <select class="form-select" id="producto-genero" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                        <option value="Unisex">Unisex</option>
+                                        <option value="Niño">Niño</option>
+                                        <option value="Niña">Niña</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Categoría *</label>
+                                    <select class="form-select" id="producto-categoria" required>
+                                        <option value="">Seleccionar...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="producto-descripcion" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarProducto()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cliente -->
+    <div class="modal fade" id="cliente-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gestión de Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-cliente">
+                        <input type="hidden" id="idCliente">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre Completo *</label>
+                            <input type="text" id="nombre" placeholder="Nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">NIT</label>
+                            <input type="number" id="NIT" placeholder="NIT" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">direccion</label>
+                            <input type="text" id="direccion" placeholder="Dirección" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Telefono</label>
+                            <input type="number" id="telefono" placeholder="Teléfono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="email" placeholder="Email" required>
+                        </div>
+                        <button type="submit">Guardar</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Categoría -->
+    <div class="modal fade" id="categoria-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gestión de Categoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="categoria-form">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <input type="text" class="form-control" id="categoria-nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" id="categoria-descripcion" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCategoria()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/cliente.js"></script>
+</body>
+
+</html>
